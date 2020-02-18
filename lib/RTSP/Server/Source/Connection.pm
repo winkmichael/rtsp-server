@@ -123,10 +123,15 @@ sub announce {
     my $mount = $self->get_mount;
 
     if ($mount) {
+        # This edit basically unmounts the old mount if a new publisher comes along
+        $self->info("MM. Already in use, going to umount.");
+        $self->unmount;
+        sleep(1);
+    
         # mount is in use. return error.
-        $self->info("Source attempting to announce mountpoint " .
-                     $mount->path . ', but it is already in use');
-        return $self->push_response(403, 'Forbidden');
+        #$self->info("Source attempting to announce mountpoint " .
+        #             $mount->path . ', but it is already in use');
+        #return $self->push_response(403, 'Forbidden');
     }
 
     $self->debug("Got source announcement for " . $self->req_uri);
